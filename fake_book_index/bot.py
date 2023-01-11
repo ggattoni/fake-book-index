@@ -86,6 +86,5 @@ if __name__ == "__main__":
     application.run_webhook(
         listen="0.0.0.0",
         port=PORT,
-        secret_token=TOKEN,
         webhook_url=URL,
     )
