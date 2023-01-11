@@ -55,19 +55,35 @@ async def query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = " ".join(query)
     result = await obtain_results_from_query(query)
     message = ""
+    page_counter = 0
     for book, songs in result.items():
         message += f":books: <b>{book}</b>:\n"
         for song in songs:
             message += f"\t\t\t\t\t:musical_note: <i>{song}</i>\n"
         message += "\n"
-    if message == "":
-        message = f":cross_mark: The song <i>{query}</i> was not found anywhere, sorry :loudly_crying_face:"
+        page_counter += 1
+        if page_counter == 5:
+            await context.bot.send_message(
+                chat_id=update.message.chat_id,
+                text=emojize(message),
+                parse_mode="html",
+            )
+            page_counter = 0
+            message = ""
 
-    await context.bot.send_message(
-        chat_id=update.message.chat_id,
-        text=emojize(message),
-        parse_mode="html",
-    )
+    if message == "" and not result:
+        message = f":cross_mark: The song <i>{query}</i> was not found anywhere, sorry :loudly_crying_face:"
+        await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=emojize(message),
+            parse_mode="html",
+        )
+    elif message != "":
+        await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=emojize(message),
+            parse_mode="html",
+        )
 
 
 if __name__ == "__main__":
