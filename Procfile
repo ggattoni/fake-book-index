@@ -1,0 +1,1 @@
+web: python3 fake_book_index/bot.py
