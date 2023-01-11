@@ -21,11 +21,13 @@ async def obtain_results_from_query(query):
             html = await response.text()
 
     soup = BeautifulSoup(html, "html.parser")
-    results = soup.find_all("p")[1:-1]
-    results = [result.text for result in results]
+    results = soup.find_all("p")[:-1]
+    results = [
+        result.text for result in results if "your search. Here" not in result.text
+    ]
     results = [results[i].replace(results[i + 1], "") for i in range(len(results) - 1)]
 
-    if len(results) < 2:
+    if len(results) < 1:
         return {}
 
     end_string = "\n\n\n\n\nSeventh String Home\n\n\n\n\n"
