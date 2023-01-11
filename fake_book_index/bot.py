@@ -6,7 +6,6 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-import json
 import aiohttp
 from bs4 import BeautifulSoup
 from emoji import emojize
@@ -71,8 +70,6 @@ async def query(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 if __name__ == "__main__":
     TOKEN = os.environ.get("BOT_TOKEN")
-    PORT = int(os.environ.get("BOT_PORT", 5000))
-    URL = os.environ.get("BOT_URL")
 
     application = ApplicationBuilder().token(TOKEN).build()
 
@@ -82,9 +79,4 @@ if __name__ == "__main__":
     application.add_handler(start_handler)
     application.add_handler(query_handler)
 
-    # application.run_polling()
-    application.run_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        webhook_url=URL,
-    )
+    application.run_polling()
