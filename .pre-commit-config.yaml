@@ -1,0 +1,22 @@
+repos:
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.11.5
+  hooks:
+  - id: ruff
+    args: [--fix]
+    always_run: true
+  - id: ruff-format
+    always_run: true
+- repo: https://github.com/astral-sh/uv-pre-commit
+  rev: 0.6.14
+  hooks:
+  - id: uv-sync
+    always_run: true
+  - id: uv-lock
+    always_run: true
+  - id: uv-export
+    args: [-q, --frozen, --no-editable, --no-dev, --no-hashes, --output-file=requirements.txt]
+    always_run: true
+  - id: uv-export
+    args: [-q, --frozen, --no-editable, --only-dev, --no-hashes, --output-file=requirements-dev.txt]
+    always_run: true
